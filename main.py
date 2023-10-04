@@ -1,6 +1,7 @@
 import os
 import cv2
-import background_substraction as bs
+# import background_substraction as bs
+import frame_differencing as fd
 
 path = 'sequences/'
 frames = []
@@ -19,8 +20,11 @@ for file in files:
     # append to the list
     frames.append(img)
 
-result = bs.background_substraction(frames)
+# result = bs.background_substraction(frames)
+result = fd.frame_differencing_average(frames)
 
 cv2.imshow('result', result)
 cv2.waitKey(0)
+
+
 
