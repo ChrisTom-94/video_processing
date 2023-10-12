@@ -1,15 +1,16 @@
 import cv2
 import numpy as np
+import utils
 
-def mhi(sequence):
-    tau = len(sequence)
+def mhi(frames):
+    tau = len(frames)
 
-    rows, cols = sequence[0].shape
+    rows, cols = frames[0].shape
     MHI = np.zeros((rows, cols))
-    prev_frame = sequence[0]
+    prev_frame = frames[0]
 
-    for frame in sequence:
-        diff = cv2.absdiff(frame, prev_frame)
+    for frame in frames:
+        diff = utils.frames_difference(prev_frame, frame)
         ret, diff = cv2.threshold(diff, tau, 1, cv2.THRESH_BINARY)
         MHI += diff
         prev_frame = frame

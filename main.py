@@ -1,28 +1,17 @@
-import os
-import cv2
 import utils
+
 import background_substraction as bs
 import frame_differencing as fd
 import motion_history_image as mhi
 
-path = 'sequences/'
 
-full_path = path + 'action/'
+# question 1.1
+paths = ['course', 'neige']
+sequences = utils.retrieve_frames(paths)
+utils.compare(bs.background_substraction, sequences, paths)
+currents = ['pirate', 'action']
+sequences = utils.retrieve_frames(currents)
+utils.compare(bs.background_substraction, sequences, currents)
 
-# list all files in the directory
-files = os.listdir(full_path)
-
-frames = [utils.grayscaled_image(full_path + file) for file in files]
-
-functions = [bs.background_substraction, fd.frame_differencing_average, mhi.mhi]
-
-results = [function(frames) for function in functions]
-
-for i in range(len(results)):
-    cv2.imshow('result', results[i])
-    cv2.setWindowTitle('result', functions[i].__name__)
-
-cv2.waitKey(0)
-
-
-
+# question 1.2
+# utils.compare(fd.frame_differencing, sequences, currents)
