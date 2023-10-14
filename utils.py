@@ -28,10 +28,8 @@ def retrieve_frames(paths):
                 for full_path, _, files in os.walk(DIR) 
                     if len(files) > 0 and full_path.split('/')[-1] in paths]
 
-def compare(fn, sequences, sequence_names):
+def compareSequences(fn, sequences, sequence_names):
     results = [fn(sequence) for sequence in sequences]
 
     for i in range(len(results)):
         cv2.imshow(sequence_names[i], results[i])
-
-    cv2.waitKey(0)
