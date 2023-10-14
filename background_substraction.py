@@ -2,7 +2,7 @@ import utils
 import numpy as np
 
 def background_substraction(frames): 
-    background = utils.compute_average_background(frames)
+    background = utils.compute_sequence_average_background(frames)
 
     result = np.zeros(frames[0].shape, dtype=np.double)
     for frame in frames:
