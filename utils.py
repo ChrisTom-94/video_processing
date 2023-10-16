@@ -9,9 +9,6 @@ def compute_sequence_average_background(frames):
     np.add.reduce(frames, out=average_background)
     return average_background / len(frames)
 
-def frames_difference(frame1, frame2):
-    return cv2.absdiff(frame2, frame1)
-
 def grayscaled_image(path):
     return cv2.cvtColor(cv2.imread(path), cv2.COLOR_BGR2GRAY)
 
@@ -22,3 +19,14 @@ def retrieve_frames(paths):
 
 def compareSequences(fn, sequences):
     return [fn(sequence) for sequence in sequences]
+
+def show_results(results, sequence_names, fn_name):
+    for i in range(len(results)):
+        name = sequence_names[i] + " - " + fn_name
+        cv2.imshow(name, results[i])
+        
+        #if file don't exist, create it
+        if not os.path.exists("./results/" + name + ".jpg"):
+            cv2.imwrite("./results/" + name + ".jpg", results[i])
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
