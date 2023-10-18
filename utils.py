@@ -4,7 +4,14 @@ import os
 
 DIR = 'sequences/'
 
-def compute_sequence_average_background(frames):
+def abs_diff(frame1, frame2):
+    return np.double(cv2.absdiff(frame1, frame2))
+
+def normalize(input):
+    M = np.max(input)
+    return np.uint8(255 * input / M)
+
+def compute_average_background(frames):
     average_background = np.zeros(frames[0].shape, dtype=np.double)
     np.add.reduce(frames, out=average_background)
     return average_background / len(frames)
@@ -18,7 +25,7 @@ def retrieve_frames(paths):
                     if len(files) > 0 and full_path.split('/')[-1] in paths]
 
 def compareSequences(fn, sequences):
-    return [fn(sequence) for sequence in sequences]
+    return [fn(np.array(sequence)) for sequence in sequences]
 
 def show_results(results, sequence_names, fn_name):
     for i in range(len(results)):

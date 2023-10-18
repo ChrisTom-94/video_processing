@@ -1,35 +1,30 @@
-import os
-import cv2
-
 import utils
-import background_substraction as bs
-import frame_differencing as fd
-import motion_history_image as mhi
+import video_processing as vp
 
 DIR = "results/"
 
 exercices = [
     # question 1.1
     # (a)
-    # [['course', 'neige'], [bs.background_substraction]],
+    # [['course', 'neige'], [vp.background_substraction]],
     # (b)
-    # [['action', 'pirate'], [bs.background_substraction]],
+    # [['action', 'pirate'], [vp.background_substraction]],
     # question 1.2
     # (a)
-    # [['action', 'femme'], [fd.frame_differencing_average]],
+    [['action', 'femme'], [vp.frame_differencing]],
     # (b)
-    # [['course', 'neige'], [fd.frame_differencing_average]],
+    # [['course', 'neige'], [vp.frame_differencing]],
     # question 1.3
     # (a) (b)
-    [['action', 'course', 'femme'], [mhi.mhi]],
+    # [['action', 'course', 'femme'], [vp.mhi]],
     # (c)
-    # [['pirate'], [mhi.mhi]],
+    # [['pirate'], [vp.mhi]],
     # question 1.4
-    # [['homme', 'pirate'], [mhi.mhi, bs.background_substraction, fd.frame_differencing_average]],
+    # [['homme', 'pirate'], [vp.mhi, vp.background_substraction, vp.frame_differencing]],
     # question 1.5
-    # [['toupie'], [mhi.mhi, bs.background_substraction, fd.frame_differencing_average]],
+    # [['toupie'], [vp.mhi, vp.background_substraction, vp.frame_differencing]],
     # question 1.6
-    # [['lumiere'], [mhi.mhi, bs.background_substraction, fd.frame_differencing_average]],
+    # [['lumiere'], [vp.mhi, vp.background_substraction, vp.frame_differencing]],
 ]
 
 for sequence_names, functions in exercices:
@@ -37,6 +32,3 @@ for sequence_names, functions in exercices:
         sequences = utils.retrieve_frames(sequence_names)
         results = utils.compareSequences(fn, sequences)
         utils.show_results(results, sequence_names, fn.__name__)
-
-# img = utils.grayscaled_image("sequences/course/frame10.png")
-# cv2.imwrite("results/course - grayscale.jpg", img)
