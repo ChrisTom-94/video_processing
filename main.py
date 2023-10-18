@@ -11,12 +11,12 @@ exercices = [
     # [['action', 'pirate'], [vp.background_substraction]],
     # question 1.2
     # (a)
-    [['action', 'femme'], [vp.frame_differencing]],
+    # [['action', 'femme'], [vp.frame_differencing]],
     # (b)
     # [['course', 'neige'], [vp.frame_differencing]],
     # question 1.3
     # (a) (b)
-    # [['action', 'course', 'femme'], [vp.mhi]],
+    [['action', 'course', 'femme'], [vp.mhi]],
     # (c)
     # [['pirate'], [vp.mhi]],
     # question 1.4
