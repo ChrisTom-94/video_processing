@@ -1,5 +1,6 @@
 import numpy as np
 import utils
+import cv2
 
 
 def background_substraction(frames):
@@ -25,3 +26,44 @@ def mhi(frames, tau=None, threshold=40):
         MHI[diff <= threshold] = np.maximum(0, MHI[diff <= threshold] - 1)
 
     return utils.normalize(MHI)
+
+
+# def optical_flow_LK(frame1, frame2):
+#     if len(frame1.shape) == 3:
+#         frame1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
+#         frame2 = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
+
+#     # Define parameters for ShiTomasi corner detection
+#     feature_params = dict(maxCorners=100, qualityLevel=0.3, minDistance=7, blockSize=7)
+#     points1 = cv2.goodFeaturesToTrack(frame1, mask=None, **feature_params)
+    
+#     # Define parameters for Lucas-Kanade optical flow
+#     lk_params = dict(winSize=(21, 21), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.3e-6))
+#     points2, status, err = cv2.calcOpticalFlowPyrLK(frame1, frame2, points1, None, **lk_params)
+
+#     good_new = points2[status == 1]
+#     good_old = points1[status == 1]
+
+#     return good_old, good_new
+
+
+def optical_flow_LK(frame1, frame2, **kwargs):
+    if len(frame1.shape) == 3:
+        frame1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
+        frame2 = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
+
+    step = kwargs.get('step', 10)
+    win_size = kwargs.get('win_size', (15, 15))
+    max_level = kwargs.get('max_level', 2)
+
+    # Define a grid of points to track
+    h, w = frame1.shape
+    y, x = np.mgrid[step/2:h:step, step/2:w:step].reshape(2, -1).astype(np.float32)
+    points1 = np.array([x, y]).T
+
+    # Use Lucas-Kanade optical flow method to track the grid points
+    lk_params = dict(winSize=win_size, maxLevel=max_level, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.3e-6))
+    points2, status, err = cv2.calcOpticalFlowPyrLK(frame1, frame2, points1, None, **lk_params)
+    
+    return points1, points2
+    
