@@ -30,33 +30,28 @@ def retrieve_frames(paths):
                 for full_path, _, files in os.walk(DIR) 
                     if len(files) > 0 and full_path.split('/')[-1] in paths]
 
-def display(results, sequence_names, fn_name):
-    for i in range(len(results)):
-        name = sequence_names[i] + "-" + fn_name
-        cv2.imshow(name, results[i])
-        
-        if not os.path.exists("./results/" + name + ".jpg"):
-            cv2.imwrite("./results/" + name + ".jpg", results[i])
+def display(result, sequence_name, fn_name):
+    name = sequence_name + "-" + fn_name
+    cv2.imshow(name, result)
     cv2.waitKey(0)
-    cv2.destroyAllWindows()
 
-def draw_flow(img, points1, points2, vector_color=(0, 0, 255)):  # default color is red
+def store(result, sequence_name, fn_name):
+        name = sequence_name + "-" + fn_name
+        cv2.imwrite("./results/" + name + ".jpg", result)
 
+def draw_flow(img, points1, points2, vector_color=(255, 200, 0)):
     vis = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
     for i, (new, old) in enumerate(zip(points2, points1)):
         a, b = map(int, new.ravel())
         c, d = map(int, old.ravel())
-
         vis = cv2.arrowedLine(vis, (c, d), (a, b), vector_color, 2, tipLength=0.2)
         
     return vis
 
 
 def normalize_flow_vectors(points1, points2, max_len=10):
-    displacements = points2 - points1
+    displacements = np.abs(points2 - points1)
     magnitudes = np.sqrt((displacements**2).sum(axis=1))
-
     normalized_displacements = displacements / (magnitudes[..., np.newaxis] + 1e-10) * max_len
-
     return points1 + normalized_displacements

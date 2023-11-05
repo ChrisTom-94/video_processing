@@ -28,25 +28,6 @@ def mhi(frames, tau=None, threshold=40):
     return utils.normalize(MHI)
 
 
-# def optical_flow_LK(frame1, frame2):
-#     if len(frame1.shape) == 3:
-#         frame1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
-#         frame2 = cv2.cvtColor(frame2, cv2.COLOR_BGR2GRAY)
-
-#     # Define parameters for ShiTomasi corner detection
-#     feature_params = dict(maxCorners=100, qualityLevel=0.3, minDistance=7, blockSize=7)
-#     points1 = cv2.goodFeaturesToTrack(frame1, mask=None, **feature_params)
-    
-#     # Define parameters for Lucas-Kanade optical flow
-#     lk_params = dict(winSize=(21, 21), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.3e-6))
-#     points2, status, err = cv2.calcOpticalFlowPyrLK(frame1, frame2, points1, None, **lk_params)
-
-#     good_new = points2[status == 1]
-#     good_old = points1[status == 1]
-
-#     return good_old, good_new
-
-
 def optical_flow_LK(frame1, frame2, **kwargs):
     if len(frame1.shape) == 3:
         frame1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
